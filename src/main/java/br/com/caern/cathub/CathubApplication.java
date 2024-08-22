@@ -3,6 +3,7 @@ package br.com.caern.cathub;
 import br.com.caern.cathub.model.DadosSerie;
 import br.com.caern.cathub.service.ConsumoApi;
 import br.com.caern.cathub.service.ConverteDados;
+import br.com.caern.cathub.service.DadosEnv;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,8 @@ public class CathubApplication implements CommandLineRunner {
 	@java.lang.Override
 	public void run(java.lang.String... args) throws Exception {
 		var consumoApi = new ConsumoApi();
-		var json = consumoApi.obterDados("https://www.omdbapi.com/?t=game+of+thrones&apikey=6585022c");
+		var apiKey = DadosEnv.loadEnv("API_KEY");
+		var json = consumoApi.obterDados("https://www.omdbapi.com/?t=game+of+thrones&apikey=" + apiKey);
 		System.out.println(json);
 
 		ConverteDados conversor = new ConverteDados();
