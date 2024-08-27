@@ -7,10 +7,8 @@ import br.com.caern.cathub.service.ConsumoApi;
 import br.com.caern.cathub.service.ConverteDados;
 import br.com.caern.cathub.service.DadosEnv;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // Exemplo de uso de Stream
 //List<String> nomes = Arrays.asList("Jacque", "Iasmin", "Paulo", "Rodrigo", "Nico");
@@ -56,6 +54,18 @@ public class Principal {
 
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .collect(Collectors.toList());
+                //.toList(); //toList assim dá uma lista imutável. Não consegue mais adicionar coisas
+                // Da forma acima, é possível modificar a lista depois
+
+        System.out.println("\nTop 5 episódios");
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
 
     }
 
