@@ -3,6 +3,7 @@ package br.com.caern.cathub.principal;
 import br.com.caern.cathub.model.DadosEpisodio;
 import br.com.caern.cathub.model.DadosSerie;
 import br.com.caern.cathub.model.DadosTemporada;
+import br.com.caern.cathub.model.Episodio;
 import br.com.caern.cathub.service.ConsumoApi;
 import br.com.caern.cathub.service.ConverteDados;
 import br.com.caern.cathub.service.DadosEnv;
@@ -67,6 +68,12 @@ public class Principal {
                 .limit(5)
                 .forEach(System.out::println);
 
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                    .map(d -> new Episodio(t.numero(), d))
+                ).collect(Collectors.toList());
+
+        episodios.forEach(System.out::println);
     }
 
 }
